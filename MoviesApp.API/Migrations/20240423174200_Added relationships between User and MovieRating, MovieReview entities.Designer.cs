@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MoviesApp.API.Data;
 
@@ -11,9 +12,11 @@ using MoviesApp.API.Data;
 namespace MoviesApp.API.Migrations
 {
     [DbContext(typeof(MoviesAppDbContext))]
-    partial class MoviesAppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240423174200_Added relationships between User and MovieRating, MovieReview entities")]
+    partial class AddedrelationshipsbetweenUserandMovieRatingMovieReviewentities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

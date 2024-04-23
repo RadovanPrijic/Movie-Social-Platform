@@ -15,45 +15,45 @@ namespace MoviesApp.API.Controllers
     public class MoviesController : ControllerBase
     {
         private readonly MoviesAppDbContext _dbContext;
-        private readonly IMovieRepository movieRepository;
-        private readonly IMapper mapper;
+        private readonly IMovieRepository _movieRepository;
+        private readonly IMapper _mapper;
 
         public MoviesController(MoviesAppDbContext dbContext, IMovieRepository movieRepository, IMapper mapper)
         {
             this._dbContext = dbContext;
-            this.movieRepository = movieRepository;
-            this.mapper = mapper;
+            this._movieRepository = movieRepository;
+            this._mapper = mapper;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllMovies()
         {
-            var movies = await movieRepository.GetAllAsync(/*includeProperties: "Genres"*/);
+            var movies = await _movieRepository.GetAllAsync(/*includeProperties: "Genres"*/);
 
-            return Ok(mapper.Map<List<MovieDTO>>(movies));
+            return Ok(_mapper.Map<List<MovieDTO>>(movies));
         }
 
         [HttpGet]
         [Route("{id:int}")]
         public async Task<IActionResult> GetMovieById([FromRoute] int id)
         {
-            var movie = await movieRepository.GetAsync(x => x.Id == id/*, includeProperties: "Genres"*/);
+            var movie = await _movieRepository.GetAsync(x => x.Id == id/*, includeProperties: "Genres"*/);
 
             if (movie == null) 
                 return NotFound();
             
-            return Ok(mapper.Map<MovieDTO>(movie));
+            return Ok(_mapper.Map<MovieDTO>(movie));
         }
 
         [HttpPost]
         [ValidateModel]
         public async Task<IActionResult> CreateMovie([FromBody] MovieCreateDTO movieCreateDTO)
         {
-            var movieDomainModel = mapper.Map<Movie>(movieCreateDTO);
+            var movieDomainModel = _mapper.Map<Movie>(movieCreateDTO);
 
-            movieDomainModel = await movieRepository.CreateAsync(movieDomainModel);
+            movieDomainModel = await _movieRepository.CreateAsync(movieDomainModel);
 
-            var movieDTO = mapper.Map<MovieDTO>(movieDomainModel);
+            var movieDTO = _mapper.Map<MovieDTO>(movieDomainModel);
 
             return CreatedAtAction(nameof(GetMovieById), new { id = movieDomainModel.Id }, movieDTO);
         }
@@ -63,30 +63,30 @@ namespace MoviesApp.API.Controllers
         [ValidateModel]
         public async Task<IActionResult> UpdateMovie([FromRoute] int id, [FromBody] MovieUpdateDTO movieUpdateDTO)
         {
-            var movieDomainModel = await movieRepository.GetAsync(x => x.Id == id);
+            var movieDomainModel = await _movieRepository.GetAsync(x => x.Id == id);
 
             if (movieDomainModel == null)
                 return NotFound();
 
-            movieDomainModel = mapper.Map<Movie>(movieUpdateDTO);
+            movieDomainModel = _mapper.Map<Movie>(movieUpdateDTO);
 
-            movieDomainModel = await movieRepository.UpdateAsync(movieDomainModel);
+            movieDomainModel = await _movieRepository.UpdateAsync(movieDomainModel);
             
-            return Ok(mapper.Map<MovieDTO>(movieDomainModel));
+            return Ok(_mapper.Map<MovieDTO>(movieDomainModel));
         }
 
         [HttpDelete]
         [Route("{id:int}")]
         public async Task<IActionResult> DeleteMovie([FromRoute] int id)
         {
-            var movieDomainModel = await movieRepository.GetAsync(x => x.Id == id);
+            var movieDomainModel = await _movieRepository.GetAsync(x => x.Id == id);
 
             if (movieDomainModel == null)
                 return NotFound();
 
-            movieDomainModel = await movieRepository.RemoveAsync(movieDomainModel);
+            movieDomainModel = await _movieRepository.RemoveAsync(movieDomainModel);
 
-            return Ok(mapper.Map<MovieDTO>(movieDomainModel));
+            return Ok(_mapper.Map<MovieDTO>(movieDomainModel));
         }
 
     }

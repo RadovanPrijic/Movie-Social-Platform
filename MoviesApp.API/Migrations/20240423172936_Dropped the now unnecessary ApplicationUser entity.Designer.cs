@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MoviesApp.API.Data;
 
@@ -11,9 +12,11 @@ using MoviesApp.API.Data;
 namespace MoviesApp.API.Migrations
 {
     [DbContext(typeof(MoviesAppDbContext))]
-    partial class MoviesAppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240423172936_Dropped the now unnecessary ApplicationUser entity")]
+    partial class DroppedthenowunnecessaryApplicationUserentity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -238,18 +241,12 @@ namespace MoviesApp.API.Migrations
                     b.Property<int>("MovieId")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int>("Value")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("MovieId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("MovieRatings");
                 });
@@ -272,15 +269,9 @@ namespace MoviesApp.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("MovieId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("MovieReviews");
                 });
@@ -428,15 +419,7 @@ namespace MoviesApp.API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MoviesApp.API.Models.Domain.User", "User")
-                        .WithMany("UserRatings")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Movie");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("MoviesApp.API.Models.Domain.MovieReview", b =>
@@ -447,15 +430,7 @@ namespace MoviesApp.API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MoviesApp.API.Models.Domain.User", "User")
-                        .WithMany("UserReviews")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Movie");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("MoviesApp.API.Models.Domain.Movie", b =>
@@ -463,13 +438,6 @@ namespace MoviesApp.API.Migrations
                     b.Navigation("MovieRatings");
 
                     b.Navigation("MovieReviews");
-                });
-
-            modelBuilder.Entity("MoviesApp.API.Models.Domain.User", b =>
-                {
-                    b.Navigation("UserRatings");
-
-                    b.Navigation("UserReviews");
                 });
 #pragma warning restore 612, 618
         }

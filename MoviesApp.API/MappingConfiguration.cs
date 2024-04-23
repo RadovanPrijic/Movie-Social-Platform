@@ -20,7 +20,7 @@ namespace MoviesApp.API
             CreateMap<MovieReview, MovieReviewCreateDTO>().ReverseMap();
             CreateMap<MovieReview, MovieReviewUpdateDTO>().ReverseMap();
 
-            CreateMap<ApplicationUser, ApplicationUserDTO>().ReverseMap();
+            CreateMap<User, UserDTO>().ReverseMap();
 
             CreateMap<Genre, GenreDTO>().ReverseMap();
         }
