@@ -19,6 +19,16 @@ builder.Services.AddDbContext<MoviesAppDbContext>(options =>
 
 builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<MoviesAppDbContext>();
 
+/*builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.Password.RequireLowercase = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequireDigit = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequiredUniqueChars = 3;
+    options.Password.RequiredLength = 8;
+});*/
+
 builder.Services.AddScoped<IUserRepository,UserRepository>();
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 
@@ -37,7 +47,7 @@ builder.Services.AddAuthentication(x =>
         x.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key)),
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)),
             ValidateIssuer = false,
             ValidateAudience = false
         };

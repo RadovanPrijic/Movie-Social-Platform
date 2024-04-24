@@ -7,6 +7,6 @@ namespace MoviesApp.API.Repositories.IRepository
     {
         Task<bool> isUserUnique(string email);
         Task<LoginResponseDTO> Login(LoginRequestDTO loginRequestDTO);
-        Task<User> Register(RegistrationRequestDTO registrationRequestDTO);
+        Task<UserDTO> Register(RegistrationRequestDTO registrationRequestDTO);
     }
 }

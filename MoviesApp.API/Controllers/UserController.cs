@@ -26,13 +26,14 @@ namespace MoviesApp.API.Controllers
             this._mapper = mapper;
         }
 
-        [HttpPost("login")]
+        [HttpPost]
+        [Route("login")]
         [ValidateModel]
         public async Task<IActionResult> Login([FromBody] LoginRequestDTO loginRequestDTO)
         {
             var loginResponse = await _userRepository.Login(loginRequestDTO);
 
-            if(loginResponse.User == null || string.IsNullOrEmpty(loginResponse.Token))
+            if(string.IsNullOrEmpty(loginResponse.Token))
             {
                 return BadRequest(new { message = "You have entered an incorrect email address or password." });
             }
@@ -40,7 +41,8 @@ namespace MoviesApp.API.Controllers
             return Ok(loginResponse);
         }
 
-        [HttpPost("register")]
+        [HttpPost]
+        [Route("register")]
         [ValidateModel]
         public async Task<IActionResult> Register([FromBody] RegistrationRequestDTO registrationRequestDTO)
         {
